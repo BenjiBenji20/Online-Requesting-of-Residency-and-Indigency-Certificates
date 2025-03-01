@@ -24,7 +24,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             roles.add("ROLE_ADMIN");
         }
 
-        return new CustomOauth2User(userRequest, roles);
+        return new CustomOauth2User(oAuth2User, roles);
     }
 
 
