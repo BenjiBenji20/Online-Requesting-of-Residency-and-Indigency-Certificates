@@ -64,8 +64,9 @@ public class Resident {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    public Resident(long id, String firstName, String lastName, String middleName, Integer age, String gender, Status status, String address, LocalDate birthDate) {
+    public Resident(long id, Date dateAt, String firstName, String lastName, String middleName, Integer age, String gender, Status status, String address, LocalDate birthDate) {
         this.id = id;
+        this.dateAt = dateAt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
