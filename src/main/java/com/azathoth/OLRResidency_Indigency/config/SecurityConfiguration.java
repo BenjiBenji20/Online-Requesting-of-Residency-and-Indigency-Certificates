@@ -12,7 +12,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) // disable csrf to access by anyone
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/residents/public/**").permitAll() // permit all public endpoints (for normal users)
                         .requestMatchers("api/admin/private/**").hasAuthority("ROLE_ADMIN") // only user with admin role can access private endpoints
@@ -20,6 +20,7 @@ public class SecurityConfiguration {
                 )
                 .oauth2Login(login -> login
                         .defaultSuccessUrl("/api/admin/private/dashboard") // redirect to admin dashboard if successful login
+                        .failureUrl("/api/admin/private/error-login") // redirect to error login page if fail to login
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/") // redirect after logout
@@ -27,6 +28,4 @@ public class SecurityConfiguration {
 
         return httpSecurity.build();
     }
-
-
 }

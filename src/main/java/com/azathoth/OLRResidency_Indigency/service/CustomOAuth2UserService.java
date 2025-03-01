@@ -18,7 +18,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // Extract user details
         String email = oAuth2User.getAttribute("email");
 
-        // Assign ADMIN role to specific users
+        // Assign ROLE_ADMIN role to specific users
         Set<String> roles = new HashSet<>();
         if("benjisobrangpogi@gmail.com".equals(email)) {
             roles.add("ROLE_ADMIN");
@@ -26,6 +26,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         return new CustomOauth2User(oAuth2User, roles);
     }
-
-
 }
