@@ -1,0 +1,159 @@
+package com.azathoth.OLRResidency_Indigency.DTO;
+
+import com.azathoth.OLRResidency_Indigency.model.Resident;
+import com.azathoth.OLRResidency_Indigency.util.Status;
+import jakarta.validation.constraints.*;
+
+import java.time.LocalDate;
+
+public class ResidentDTO {
+    private long id;
+
+    @NotBlank(message = "First name cannot be empty")
+    @Size(min = 2, max = 100, message = "First name must be between 2-100 characters")
+    @Pattern(regexp = "^[\\p{L}]+$", message = "First name cannot contain special characters or spaces")
+    private String firstName;
+
+    @NotBlank(message = "Last name cannot be empty")
+    @Size(min = 2, max = 100, message = "Last name must be between 2-100 characters")
+    @Pattern(regexp = "^[\\p{L}]+$", message = "Last name cannot contain special characters or spaces")
+    private String lastName;
+
+    @Size(min = 2, max = 100, message = "Middle name must be between 2-100 characters")
+    @Pattern(regexp = "^[\\p{L}]+$", message = "Middle name cannot contain special characters or spaces")
+    private String middleName;
+
+    @Size(min = 1, max = 2, message = "Suffix must be 1-2 characters")
+    @Pattern(regexp = "^[\\p{L}]+$", message = "Suffix cannot contain special characters or spaces")
+    private String suffix;
+
+    @NotNull(message = "Age cannot be null")
+    @Min(value = 0, message = "Age must be a positive number")
+    private Integer age;
+
+    @NotBlank(message = "Gender cannot be empty")
+    @Size(min = 1, max = 10, message = "Gender must be 1-10 characters")
+    private String gender;
+
+    @NotNull(message = "Status cannot be null")
+    private Status status;
+
+    @NotBlank(message = "Address cannot be empty")
+    private String completeAddress;
+
+    @NotNull(message = "Birth date cannot be null")
+    private LocalDate birthDate;
+
+    public ResidentDTO(long id, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.suffix = suffix;
+        this.age = age;
+        this.gender = gender;
+        this.status = status;
+        this.completeAddress = completeAddress;
+        this.birthDate = birthDate;
+    }
+
+    public ResidentDTO() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getCompleteAddress() {
+        return completeAddress;
+    }
+
+    public void setCompleteAddress(String completeAddress) {
+        this.completeAddress = completeAddress;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public ResidentDTO convertToResidentDTO(Resident resident) {
+        ResidentDTO dto = new ResidentDTO();
+
+        dto.setId(resident.getId());
+        dto.setFirstName(resident.getFirstName());
+        dto.setLastName(resident.getLastName());
+        dto.setMiddleName(resident.getMiddleName());
+        dto.setSuffix(resident.getSuffix());
+        dto.setAge(resident.getAge());
+        dto.setGender(resident.getGender());
+        dto.setStatus(resident.getStatus());
+        dto.setCompleteAddress(resident.getCompleteAddress());
+        dto.setBirthDate(resident.getBirthDate());
+
+        return dto;
+    }
+}

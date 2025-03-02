@@ -2,10 +2,6 @@ package com.azathoth.OLRResidency_Indigency.model;
 
 import com.azathoth.OLRResidency_Indigency.util.Status;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -18,62 +14,50 @@ public class Resident {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    // auto generate date when user data is entered in db
+    // auto generated date when new object enters the db
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private Date dateAt;
 
-    @Column(name = "first_name", nullable = false)
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Cannot allowed special characters or space at the beginning")
-    @NotNull(message = "Name field cannot be empty")
-    @Size(min = 2, max = 100, message = "Name must be between 2-100 letters")
+    @Column(name = "first_name", nullable = false, length = 100) // Database constraint
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Cannot allowed special characters or space at the beginning")
-    @NotNull(message = "Name field cannot be empty")
-    @Size(min = 2, max = 100, message = "Name must be between 2-100 letters")
+    @Column(name = "last_name", nullable = false, length = 100) // Database constraint
     private String lastName;
 
-    @Column(name = "middle_name")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Cannot allowed special characters or space at the beginning")
-    @Size(min = 2, max = 100, message = "Name must be between 2-100 letters")
+    @Column(name = "middle_name", length = 100) // Optional field
     private String middleName;
 
-    @NotNull(message = "Age field cannot be empty")
-    @Size(min = 1, max = 3)
-    @Min(value = 0, message = "Age must be positive")
-    @Column(nullable = false)
+    @Column(length = 2) // Suffix (e.g., Jr., Sr.)
+    private String suffix;
+
+    @Column(nullable = false) // Database constraint
     private Integer age;
 
-    @NotNull(message = "Gender field cannot be empty")
-    @Size(min = 10, max = 100)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10) // Database constraint
     private String gender;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Status field cannot be empty")
-    @Column(nullable = false)
+    @Column(nullable = false) // Database constraint
     private Status status;
 
-    @NotNull(message = "Address field cannot be empty")
-    @Column(name = "complete_address", nullable = false)
-    private String address;
+    @Column(name = "complete_address", nullable = false) // Database constraint
+    private String completeAddress;
 
-    @NotNull(message = "Birth date field cannot be empty")
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date", nullable = false) // Database constraint
     private LocalDate birthDate;
 
-    public Resident(long id, Date dateAt, String firstName, String lastName, String middleName, Integer age, String gender, Status status, String address, LocalDate birthDate) {
+    public Resident(long id, Date dateAt, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
         this.id = id;
         this.dateAt = dateAt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
+        this.suffix = suffix;
         this.age = age;
         this.gender = gender;
         this.status = status;
-        this.address = address;
+        this.completeAddress = completeAddress;
         this.birthDate = birthDate;
     }
 
@@ -112,6 +96,14 @@ public class Resident {
         this.middleName = middleName;
     }
 
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
     public Integer getAge() {
         return age;
     }
@@ -136,12 +128,12 @@ public class Resident {
         this.status = status;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCompleteAddress() {
+        return completeAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCompleteAddress(String completeAddress) {
+        this.completeAddress = completeAddress;
     }
 
     public LocalDate getBirthDate() {
