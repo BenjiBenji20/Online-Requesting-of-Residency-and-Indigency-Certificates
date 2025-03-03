@@ -6,25 +6,30 @@ import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
+/**
+ * regex pattern ^\p{L}+[\p{L}\p{Z}\p{P}]{0,}
+ * allows : Letters (A-Z, a-z, including Unicode characters like ñ, é, ü)
+ * and white spaces at between characters
+ */
 public class ResidentDTO {
     private long id;
 
     @NotBlank(message = "First name cannot be empty")
     @Size(min = 2, max = 100, message = "First name must be between 2-100 characters")
-    @Pattern(regexp = "^[\\p{L}]+$", message = "First name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "First name cannot contain special characters or spaces")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be empty")
     @Size(min = 2, max = 100, message = "Last name must be between 2-100 characters")
-    @Pattern(regexp = "^[\\p{L}]+$", message = "Last name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Last name cannot contain special characters or spaces")
     private String lastName;
 
     @Size(min = 2, max = 100, message = "Middle name must be between 2-100 characters")
-    @Pattern(regexp = "^[\\p{L}]+$", message = "Middle name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Middle name cannot contain special characters or spaces")
     private String middleName;
 
     @Size(min = 1, max = 2, message = "Suffix must be 1-2 characters")
-    @Pattern(regexp = "^[\\p{L}]+$", message = "Suffix cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Suffix cannot contain special characters or spaces")
     private String suffix;
 
     @NotNull(message = "Age cannot be null")
