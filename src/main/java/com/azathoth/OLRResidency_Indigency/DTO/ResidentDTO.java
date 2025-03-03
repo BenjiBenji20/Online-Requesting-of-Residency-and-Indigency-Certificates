@@ -47,6 +47,7 @@ public class ResidentDTO {
     private String completeAddress;
 
     @NotNull(message = "Birth date cannot be null")
+    @Past(message = "Date must be from the past")
     private LocalDate birthDate;
 
     public ResidentDTO(long id, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
