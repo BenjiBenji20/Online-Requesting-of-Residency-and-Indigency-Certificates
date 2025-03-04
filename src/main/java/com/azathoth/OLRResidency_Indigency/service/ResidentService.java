@@ -20,7 +20,7 @@ public class ResidentService {
     public Optional<Resident> register(@Valid ResidentDTO resident) {
         try {
             // transfer dto to resident object
-            Resident registeredResident = mapToEntity(resident);
+            Resident registeredResident = convertToEntity(resident);
 
             // save to db
             return Optional.of(residentRepository.save(registeredResident));
@@ -30,7 +30,7 @@ public class ResidentService {
         }
     }
 
-    private Resident mapToEntity(ResidentDTO residentDTO) {
+    private Resident convertToEntity(ResidentDTO residentDTO) {
         Resident resident = new Resident();
         resident.setFirstName(residentDTO.getFirstName());
         resident.setLastName(residentDTO.getLastName());
