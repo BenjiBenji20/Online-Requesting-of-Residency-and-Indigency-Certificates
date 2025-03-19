@@ -14,6 +14,12 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 
 @Configuration
@@ -49,7 +55,10 @@ public class SecurityConfiguration {
                         )
                 )
                 .logout(logout -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/") // redirect after logout
+                        .invalidateHttpSession(true) // invalidate session
+                        .deleteCookies("JSESSIONID") // delete session cookie
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Enable session management
@@ -77,5 +86,22 @@ public class SecurityConfiguration {
                 .userNameAttributeName("sub")
                 .clientName("Google")
                 .build();
+    }
+
+    @Value("${frontend.origin}")
+    private String frontendOrigin;
+    @Bean
+    public CorsConfigurationSource corsConfiguration() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(Collections.singletonList(frontendOrigin));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }

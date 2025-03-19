@@ -50,13 +50,13 @@ public class ResidentController {
             switch (requestType.toLowerCase()) {
                 case "indigency" :
                     generatePDF = pdfGeneratorService.generateIndigencyPDF(registeredResident.get());
-                    fileName = "indigency-" + registeredResident.get().getFirstName() +
+                    fileName = "indigency-" + registeredResident.get().getFirstName() + " " +
                             registeredResident.get().getLastName() + "-request-info.pdf";
                     break;
 
                 case "residency" :
                     generatePDF = pdfGeneratorService.generateResidencyPDF(registeredResident.get());
-                    fileName = "residency-" + registeredResident.get().getFirstName() +
+                    fileName = "residency-" + registeredResident.get().getFirstName() + " " +
                             registeredResident.get().getLastName() + "-request-info.pdf";
                     break;
 
