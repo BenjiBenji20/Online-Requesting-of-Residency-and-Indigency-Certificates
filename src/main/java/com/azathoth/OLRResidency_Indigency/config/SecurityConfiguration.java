@@ -4,6 +4,7 @@ import com.azathoth.OLRResidency_Indigency.service.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 
 @Configuration
@@ -42,26 +44,29 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable) // disable csrf to access by anyone
+                .cors(cors -> cors.configurationSource(corsConfiguration()))
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/residents/public/**").permitAll() // permit all public endpoints (for normal users)
                         .requestMatchers("/api/admin/private/**").hasAuthority("ROLE_ADMIN") // only user with admin role can access private endpoints
+                        .requestMatchers("/oauth2/**", "/login/**").permitAll() // Allow OAuth2 endpoints
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(login -> login
-                        .defaultSuccessUrl("/api/admin/private/dashboard") // Redirect after successful login
-                        .failureUrl("/api/admin/private/error-login") // Redirect after failed login
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService) // Use custom OAuth2 user service
+                        .defaultSuccessUrl("http://127.0.0.1:5500/admin/admin-dashboard.html", true) // Redirect after successful login
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService) // Use custom OAuth2 user service
                         )
                 )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .sessionFixation().migrateSession()
+                )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/") // redirect after logout
+                        .logoutUrl("/logout") // logout url http://localhost:8081/logout
+                        .logoutSuccessUrl("http://localhost:8081/oauth2/authorization/google") // success logout url
                         .invalidateHttpSession(true) // invalidate session
                         .deleteCookies("JSESSIONID") // delete session cookie
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Enable session management
+                        .clearAuthentication(true)
                 );
 
         return httpSecurity.build();
@@ -95,9 +100,11 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(Collections.singletonList(frontendOrigin));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTION"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
