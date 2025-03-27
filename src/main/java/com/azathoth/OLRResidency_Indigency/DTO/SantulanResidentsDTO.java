@@ -1,22 +1,16 @@
 package com.azathoth.OLRResidency_Indigency.DTO;
 
-import com.azathoth.OLRResidency_Indigency.model.Resident;
 import com.azathoth.OLRResidency_Indigency.util.Status;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-/**
- * regex pattern ^\p{L}+[\p{L}\p{Z}\p{P}]{0,}
- * allows : Letters (A-Z, a-z, including Unicode characters like ñ, é, ü)
- * and white spaces at between characters
- */
-public class ResidentDTO {
+public class SantulanResidentsDTO {
     private long id;
 
     @NotNull(message = "National id number cannot be empty")
     @Digits(integer = 12, fraction = 0, message = "National ID must be exactly 12 digits")
-    private long nationalId;
+    private Long nationalId;
 
     @NotBlank(message = "First name cannot be empty")
     @Size(min = 2, max = 100, message = "First name must be between 2-100 characters")
@@ -54,7 +48,7 @@ public class ResidentDTO {
     @Past(message = "Date must be from the past")
     private LocalDate birthDate;
 
-    public ResidentDTO(long id, long nationalId, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
+    public SantulanResidentsDTO(long id, long nationalId, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
         this.id = id;
         this.nationalId = nationalId;
         this.firstName = firstName;
@@ -68,7 +62,12 @@ public class ResidentDTO {
         this.birthDate = birthDate;
     }
 
-    public ResidentDTO() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getNationalId() {
@@ -77,14 +76,6 @@ public class ResidentDTO {
 
     public void setNationalId(long nationalId) {
         this.nationalId = nationalId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -157,22 +148,5 @@ public class ResidentDTO {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public ResidentDTO convertToResidentDTO(Resident resident) {
-        ResidentDTO dto = new ResidentDTO();
-
-        dto.setId(resident.getId());
-        dto.setFirstName(resident.getFirstName());
-        dto.setLastName(resident.getLastName());
-        dto.setMiddleName(resident.getMiddleName());
-        dto.setSuffix(resident.getSuffix());
-        dto.setAge(resident.getAge());
-        dto.setGender(resident.getGender());
-        dto.setStatus(resident.getStatus());
-        dto.setCompleteAddress(resident.getCompleteAddress());
-        dto.setBirthDate(resident.getBirthDate());
-
-        return dto;
     }
 }

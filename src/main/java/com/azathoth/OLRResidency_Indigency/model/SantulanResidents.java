@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "malabon_resident", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "national_id_number")
+@Table(name = "brgy_santulan_resident", uniqueConstraints = {
+            @UniqueConstraint(columnNames = "national_id_number")
 })
-public class Resident {
+public class SantulanResidents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -52,9 +52,8 @@ public class Resident {
     @Column(name = "birth_date", nullable = false) // Database constraint
     private LocalDate birthDate;
 
-    public Resident(long id, Date dateAt, long nationalId, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
+    public SantulanResidents(long id, long nationalId, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
         this.id = id;
-        this.dateAt = dateAt;
         this.nationalId = nationalId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -67,7 +66,8 @@ public class Resident {
         this.birthDate = birthDate;
     }
 
-    public Resident() {
+    public SantulanResidents() {
+
     }
 
     public long getId() {
@@ -84,6 +84,14 @@ public class Resident {
 
     public void setNationalId(long nationalId) {
         this.nationalId = nationalId;
+    }
+
+    public Date getDateAt() {
+        return dateAt;
+    }
+
+    public void setDateAt(Date dateAt) {
+        this.dateAt = dateAt;
     }
 
     public String getFirstName() {

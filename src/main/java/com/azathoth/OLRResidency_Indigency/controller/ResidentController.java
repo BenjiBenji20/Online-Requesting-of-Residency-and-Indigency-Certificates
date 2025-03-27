@@ -27,11 +27,6 @@ public class ResidentController {
         this.pdfGeneratorService = pdfGeneratorService;
     }
 
-    @GetMapping("/greet")
-    public String greeting() {
-        return "Hello Malabon Residents!";
-    }
-
     @PostMapping("/register-and-request/{requestType}")
     public ResponseEntity<?> registerResident(@PathVariable String requestType,
                                               @Valid @RequestBody ResidentDTO resident) {
@@ -39,7 +34,8 @@ public class ResidentController {
             Optional<Resident> registeredResident = residentService.register(resident);
 
             if(registeredResident.isEmpty()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.badRequest().body(Map.of("error", "Resident didn't exists by national id: "
+                        + resident.getNationalId() + " Please register first in barangay."));
             }
 
             // generate pdf based on request type

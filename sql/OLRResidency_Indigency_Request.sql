@@ -6,4 +6,8 @@ SHOW TABLES;
 
 SELECT * FROM malabon_resident;
 
+SELECT * FROM brgy_santulan_resident;
+
+SHOW CREATE TABLE malabon_resident;
+
 -- DROP TABLE IF EXISTS malabon_residents;
