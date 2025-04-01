@@ -1,7 +1,8 @@
 package com.azathoth.OLRResidency_Indigency.controller;
 
 import com.azathoth.OLRResidency_Indigency.DTO.ResidentDTO;
-import com.azathoth.OLRResidency_Indigency.model.Resident;
+import com.azathoth.OLRResidency_Indigency.model.DocumentRequest;
+import com.azathoth.OLRResidency_Indigency.model.DocumentType;
 import com.azathoth.OLRResidency_Indigency.service.RequestDocumentService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -24,8 +25,8 @@ public class RequestDocumentController {
         this.requestDocumentService = requestDocumentService;
     }
 
-    @PostMapping("/request/{requestType}")
-    public ResponseEntity<?> requestDocument(@PathVariable String requestType, @Valid @RequestBody ResidentDTO residentDTO) {
+    @PostMapping("/request/{documentType}")
+    public ResponseEntity<?> requestDocument(@PathVariable DocumentType documentType, @Valid @RequestBody ResidentDTO residentDTO) {
         try {
             boolean isResidentExists = requestDocumentService.findResident(
                     residentDTO.getNationalId(), residentDTO.getFirstName(), residentDTO.getLastName()
@@ -37,22 +38,26 @@ public class RequestDocumentController {
             }
 
             String request = "";
-            Optional<Resident> resident;
+            Optional<DocumentRequest> documentRequest;
 
-            switch (requestType.toLowerCase()) {
-                case "barangay-clearance" :
+            switch (documentType.toString().toLowerCase()) {
+                case "barangay_clearance" :
                     request = "barangay clearance";
-                    resident = requestDocumentService.processBarangayClearance(request, residentDTO);
+                    documentRequest = requestDocumentService.processBarangayClearance(documentType, residentDTO);
                     break;
 
                 default :
                     return ResponseEntity.badRequest().body(Map.of("error", "Bad request"));
             }
 
-            return resident.isEmpty() ?
+            return documentRequest.isEmpty() ?
                     ResponseEntity.badRequest().body(Map.of("error", "Resident didn't exists by national id: "
                             + residentDTO.getNationalId() + " Please register first in barangay.")) :
-                    ResponseEntity.ok().body(Map.of("message", "Request has been sent. Please check your sms inbox"));
+                    ResponseEntity.ok().body(Map.of(
+                            "message", "Request submitted successfully",
+                            "request: ", request,
+                            "dueDate", documentRequest.get().getDueDate()
+                    ));
         }
         catch (HttpClientErrorException e) {
             logger.error("SMS sending failed: HTTP error - Status: {}, Response: {}",

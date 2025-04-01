@@ -7,6 +7,8 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class SendSms {
     // twilio api keys
@@ -21,12 +23,12 @@ public class SendSms {
     public void init() {
     }
 
-    public void sendSmsMessage(String requestType, String contactNumber) {
+    public void sendSmsMessage(String requestType, LocalDate dueDate, String contactNumber) {
         Twilio.init(twilioSID, twilioKey);
                 Message.creator(
                         new PhoneNumber("+63" + contactNumber), // to
                         new PhoneNumber(myPhoneNumber), // from
-                        "Kunin ang " + requestType + "sa Barangay Hall." // body (message)
+                        "Kunin ang " + requestType + "sa Barangay Hall.\nDue date: " +  dueDate // body (message)
                 ).create();
     }
 }
