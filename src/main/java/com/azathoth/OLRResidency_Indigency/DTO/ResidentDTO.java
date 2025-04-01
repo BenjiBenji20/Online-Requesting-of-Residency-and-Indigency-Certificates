@@ -1,7 +1,9 @@
 package com.azathoth.OLRResidency_Indigency.DTO;
 
 import com.azathoth.OLRResidency_Indigency.model.Resident;
+import com.azathoth.OLRResidency_Indigency.util.Purpose;
 import com.azathoth.OLRResidency_Indigency.util.Status;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -20,20 +22,20 @@ public class ResidentDTO {
 
     @NotBlank(message = "First name cannot be empty")
     @Size(min = 2, max = 100, message = "First name must be between 2-100 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "First name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "First name cannot contain special characters or spaces")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be empty")
     @Size(min = 2, max = 100, message = "Last name must be between 2-100 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Last name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Last name cannot contain special characters or spaces")
     private String lastName;
 
     @Size(min = 2, max = 100, message = "Middle name must be between 2-100 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Middle name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Middle name cannot contain special characters or spaces")
     private String middleName;
 
     @Size(min = 1, max = 2, message = "Suffix must be 1-2 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Suffix cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Suffix cannot contain special characters or spaces")
     private String suffix;
 
     @NotNull(message = "Age cannot be null")
@@ -41,6 +43,7 @@ public class ResidentDTO {
     private Integer age;
 
     @NotBlank(message = "Gender cannot be empty")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Gender cannot contain special characters or spaces")
     @Size(min = 1, max = 10, message = "Gender must be 1-10 characters")
     private String gender;
 
@@ -48,19 +51,33 @@ public class ResidentDTO {
     private Status status;
 
     @NotBlank(message = "Address cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.]{0,}$", message = "Address cannot contain special characters")
+    @Size(max = 255)
     private String completeAddress;
 
     @NotNull(message = "Birth date cannot be null")
     @Past(message = "Date must be from the past")
     private LocalDate birthDate;
 
-    public ResidentDTO(long id, long nationalId, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
+    @NotNull(message = "Purpose cannot be empty")
+    private Purpose purpose;
+
+    @NotBlank(message = "Please provide your contact number")
+    @Size(max = 11)
+    @Pattern(regexp = "^[0-9]+$", message = "Contact number only allow integer digits")
+    private String contactNumber;
+
+    public ResidentDTO(long id, long nationalId, String firstName, String lastName, String middleName, String suffix,
+                       Integer age, String gender, Status status, String completeAddress, LocalDate birthDate,
+                       Purpose purpose, String contactNumber) {
         this.id = id;
+        this.purpose = purpose;
         this.nationalId = nationalId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
+        this.contactNumber = contactNumber;
         this.age = age;
         this.gender = gender;
         this.status = status;
@@ -69,6 +86,22 @@ public class ResidentDTO {
     }
 
     public ResidentDTO() {
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Purpose getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(Purpose purpose) {
+        this.purpose = purpose;
     }
 
     public long getNationalId() {

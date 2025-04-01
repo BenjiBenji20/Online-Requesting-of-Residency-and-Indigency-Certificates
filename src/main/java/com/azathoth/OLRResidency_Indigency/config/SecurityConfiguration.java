@@ -47,6 +47,7 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfiguration()))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/documents/public/**").permitAll()
                         .requestMatchers("/api/santulan/residents/public/**").permitAll()
                         .requestMatchers("/api/residents/public/**").permitAll() // permit all public endpoints (for normal users)
                         .requestMatchers("/api/admin/private/**").hasAuthority("ROLE_ADMIN") // only user with admin role can access private endpoints

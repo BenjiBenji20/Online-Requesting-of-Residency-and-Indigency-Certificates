@@ -41,6 +41,7 @@ public class SantulanResidentsService {
         SantulanResidents resident = new SantulanResidents();
 
         resident.setNationalId(santulanResidentsDTO.getNationalId());
+        resident.setPurpose(santulanResidentsDTO.getPurpose());
         resident.setFirstName(santulanResidentsDTO.getFirstName());
         resident.setLastName(santulanResidentsDTO.getLastName());
         resident.setMiddleName(santulanResidentsDTO.getMiddleName());
@@ -50,7 +51,7 @@ public class SantulanResidentsService {
         resident.setStatus(santulanResidentsDTO.getStatus());
         resident.setCompleteAddress(santulanResidentsDTO.getCompleteAddress());
         resident.setBirthDate(santulanResidentsDTO.getBirthDate());
-
+        resident.setContactNumber(santulanResidentsDTO.getContactNumber());
         return resident;
     }
 }

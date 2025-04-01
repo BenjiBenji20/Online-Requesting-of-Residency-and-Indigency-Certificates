@@ -1,5 +1,6 @@
 package com.azathoth.OLRResidency_Indigency.model;
 
+import com.azathoth.OLRResidency_Indigency.util.Purpose;
 import com.azathoth.OLRResidency_Indigency.util.Status;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -52,14 +53,25 @@ public class Resident {
     @Column(name = "birth_date", nullable = false) // Database constraint
     private LocalDate birthDate;
 
-    public Resident(long id, Date dateAt, long nationalId, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Purpose purpose;
+
+    @Column(name = "contact_no", length = 11, nullable = false)
+    private String contactNumber;
+
+    public Resident(long id, Date dateAt, long nationalId, String firstName, String lastName,
+                    String middleName, String suffix, Integer age, String gender, Status status,
+                    String completeAddress, LocalDate birthDate, Purpose purpose, String contactNumber) {
         this.id = id;
+        this.purpose = purpose;
         this.dateAt = dateAt;
         this.nationalId = nationalId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
+        this.contactNumber = contactNumber;
         this.age = age;
         this.gender = gender;
         this.status = status;
@@ -68,6 +80,22 @@ public class Resident {
     }
 
     public Resident() {
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Purpose getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(Purpose purpose) {
+        this.purpose = purpose;
     }
 
     public long getId() {

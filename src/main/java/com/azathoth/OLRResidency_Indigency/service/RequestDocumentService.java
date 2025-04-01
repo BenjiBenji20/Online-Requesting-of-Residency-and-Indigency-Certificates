@@ -10,45 +10,44 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ResidentService {
+public class RequestDocumentService {
 
-    private final ResidentRepository residentRepository;
     private final SantulanResidentsRepository santulanResidentsRepository;
+    private final ResidentRepository residentRepository;
+    private final SendSms sms;
 
-    public ResidentService(ResidentRepository residentRepository, SantulanResidentsRepository santulanResidentsRepository) {
-        this.residentRepository = residentRepository;
+    public RequestDocumentService(SantulanResidentsRepository santulanResidentsRepository, ResidentRepository residentRepository, SendSms sms) {
         this.santulanResidentsRepository = santulanResidentsRepository;
+        this.residentRepository = residentRepository;
+        this.sms = sms;
     }
 
-    public Optional<Resident> register(@Valid ResidentDTO resident) {
-        try {
-            // first, find if the resident's combination of info exists in database
-            // Note: this will be unique because of national id
-            boolean isResidentExists = santulanResidentsRepository.findResidentByInfo(
-                    resident.getNationalId(),
-                    resident.getFirstName(),
-                    resident.getLastName()
-            );
+    // find resident if available in database using its info
+    public boolean findResident(long nationalId, String firstName, String lastName) {
+        // first, find if the resident's combination of info exists in database
+        // Note: this will be unique because of national id
+        return santulanResidentsRepository.findResidentByInfo(
+                nationalId, firstName, lastName
+        );
+    }
 
-            // if resident didn't exist return empty
-            if(!isResidentExists) {
-                return Optional.empty();
-            }
+    public Optional<Resident> processBarangayClearance(String request, @Valid ResidentDTO residentDTO) {
+        // transfer dto to resident object
+        Resident registeredResident = convertToEntity(residentDTO);
 
-            // transfer dto to resident object
-            Resident registeredResident = convertToEntity(resident);
+        /*
+         * Send sms message here
+         */
+        sms.sendSmsMessage(request, residentDTO.getContactNumber());
 
-            // save to db
-            return Optional.of(residentRepository.save(registeredResident));
-        }
-        catch (NullPointerException nullPointerException) {
-            return Optional.empty();
-        }
+        // save to db
+        return Optional.of(residentRepository.save(registeredResident));
     }
 
     private Resident convertToEntity(ResidentDTO residentDTO) {
         Resident resident = new Resident();
         resident.setNationalId(residentDTO.getNationalId());
+        resident.setContactNumber(residentDTO.getContactNumber());
         resident.setPurpose(residentDTO.getPurpose());
         resident.setFirstName(residentDTO.getFirstName());
         resident.setLastName(residentDTO.getLastName());
@@ -59,7 +58,6 @@ public class ResidentService {
         resident.setStatus(residentDTO.getStatus());
         resident.setCompleteAddress(residentDTO.getCompleteAddress());
         resident.setBirthDate(residentDTO.getBirthDate());
-        resident.setContactNumber(residentDTO.getContactNumber());
         return resident;
     }
 }

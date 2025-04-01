@@ -1,6 +1,10 @@
 package com.azathoth.OLRResidency_Indigency.model;
 
+import com.azathoth.OLRResidency_Indigency.util.Purpose;
 import com.azathoth.OLRResidency_Indigency.util.Status;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -10,20 +14,20 @@ public class UpdateResident {
 
     @NotBlank(message = "First name cannot be empty")
     @Size(min = 2, max = 100, message = "First name must be between 2-100 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "First name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "First name cannot contain special characters or spaces")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be empty")
     @Size(min = 2, max = 100, message = "Last name must be between 2-100 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Last name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Last name cannot contain special characters or spaces")
     private String lastName;
 
     @Size(min = 2, max = 100, message = "Middle name must be between 2-100 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Middle name cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Middle name cannot contain special characters or spaces")
     private String middleName;
 
     @Size(min = 1, max = 2, message = "Suffix must be 1-2 characters")
-    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", message = "Suffix cannot contain special characters or spaces")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Suffix cannot contain special characters or spaces")
     private String suffix;
 
     @NotNull(message = "Age cannot be null")
@@ -31,6 +35,7 @@ public class UpdateResident {
     private Integer age;
 
     @NotBlank(message = "Gender cannot be empty")
+    @Pattern(regexp = "^\\p{L}+[\\p{L}\\p{Z}]{0,}", message = "Gender cannot contain special characters or spaces")
     @Size(min = 1, max = 10, message = "Gender must be 1-10 characters")
     private String gender;
 
@@ -38,18 +43,31 @@ public class UpdateResident {
     private Status status;
 
     @NotBlank(message = "Address cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.]{0,}$", message = "Address cannot contain special characters")
+    @Size(max = 255)
     private String completeAddress;
 
     @NotNull(message = "Birth date cannot be null")
     @Past(message = "Date must be from the past")
     private LocalDate birthDate;
 
-    public UpdateResident(long id, String firstName, String lastName, String middleName, String suffix, Integer age, String gender, Status status, String completeAddress, LocalDate birthDate) {
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Purpose purpose;
+
+    @Column(name = "contact_no", length = 11, nullable = false)
+    private String contactNumber;
+
+    public UpdateResident(long id, String firstName, String lastName, String middleName, String suffix,
+                          Integer age, String gender, Status status, String completeAddress, LocalDate birthDate,
+                          Purpose purpose, String contactNumber) {
         this.id = id;
+        this.purpose = purpose;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
+        this.contactNumber = contactNumber;
         this.age = age;
         this.gender = gender;
         this.status = status;
@@ -58,6 +76,22 @@ public class UpdateResident {
     }
 
     public UpdateResident() {
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Purpose getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(Purpose purpose) {
+        this.purpose = purpose;
     }
 
     public long getId() {
