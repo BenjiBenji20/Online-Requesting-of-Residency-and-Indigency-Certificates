@@ -11,7 +11,6 @@ public class SantulanResidentsDTO {
 
     @NotNull(message = "National id number cannot be empty")
     @Digits(integer = 12, fraction = 0, message = "National ID must be exactly 12 digits")
-    @Pattern(regexp = "^[0-9]+$", message = "National id must only contain integers")
     private long nationalId;
 
     @NotBlank(message = "First name cannot be empty")

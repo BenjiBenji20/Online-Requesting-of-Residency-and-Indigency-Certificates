@@ -55,7 +55,7 @@ public class RequestDocumentController {
                             + residentDTO.getNationalId() + " Please register first in barangay.")) :
                     ResponseEntity.ok().body(Map.of(
                             "message", "Request submitted successfully",
-                            "request: ", request,
+                            "request", request,
                             "dueDate", documentRequest.get().getDueDate()
                     ));
         }

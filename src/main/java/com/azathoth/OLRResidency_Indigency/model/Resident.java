@@ -7,11 +7,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "malabon_resident", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "national_id_number")
-})
+@Table(name = "malabon_resident")
 public class Resident {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +58,10 @@ public class Resident {
 
     @Column(name = "contact_no", length = 11, nullable = false)
     private String contactNumber;
+
+    @OneToMany(mappedBy = "resident", cascade = CascadeType.REMOVE)
+    private List<DocumentRequest> documentRequests;
+
 
     public Resident(long id, Date dateAt, long nationalId, String firstName, String lastName,
                     String middleName, String suffix, Integer age, String gender, Status status,

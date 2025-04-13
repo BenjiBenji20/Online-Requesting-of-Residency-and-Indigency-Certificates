@@ -1,7 +1,6 @@
 package com.azathoth.OLRResidency_Indigency.model;
 
 import com.azathoth.OLRResidency_Indigency.util.DocumentStatus;
-import com.azathoth.OLRResidency_Indigency.util.Status;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

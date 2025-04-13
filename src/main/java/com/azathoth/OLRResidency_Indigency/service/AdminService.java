@@ -2,7 +2,9 @@ package com.azathoth.OLRResidency_Indigency.service;
 
 import com.azathoth.OLRResidency_Indigency.model.Resident;
 import com.azathoth.OLRResidency_Indigency.model.UpdateResident;
+import com.azathoth.OLRResidency_Indigency.repository.DocumentRequestRepository;
 import com.azathoth.OLRResidency_Indigency.repository.ResidentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,11 @@ import java.util.Optional;
 @Service
 public class AdminService {
     private final ResidentRepository residentRepository;
+    private final DocumentRequestRepository documentRequestRepository;
 
-    public AdminService(ResidentRepository residentRepository) {
+    public AdminService(ResidentRepository residentRepository, DocumentRequestRepository documentRequestRepository) {
         this.residentRepository = residentRepository;
+        this.documentRequestRepository = documentRequestRepository;
     }
 
     public Optional<List<Resident>> getAllResidents() {
@@ -25,12 +29,14 @@ public class AdminService {
         }
     }
 
+    @Transactional
     public boolean deleteResident(Long id) {
         try {
             Optional<Resident> resident = residentRepository.findById(id);
 
             // if resident is present, then delete it and return true
             if(resident.isPresent()) {
+                documentRequestRepository.deleteById(resident.get().getId());
                 residentRepository.delete(resident.get());
                 return true;
             }
@@ -74,7 +80,7 @@ public class AdminService {
         }
     }
 
-    public List<Resident> searchResident(String firstName, String lastName, String middleName, String suffix) {
-        return residentRepository.searchResidents(firstName, lastName, middleName, suffix);
+    public List<Resident> searchResident(String keyword) {
+        return residentRepository.searchResidents(keyword);
     }
 }

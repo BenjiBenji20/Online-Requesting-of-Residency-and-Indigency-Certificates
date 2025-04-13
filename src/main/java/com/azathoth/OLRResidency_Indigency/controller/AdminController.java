@@ -5,6 +5,8 @@ import com.azathoth.OLRResidency_Indigency.model.UpdateResident;
 import com.azathoth.OLRResidency_Indigency.service.AdminService;
 import org.hibernate.exception.DataException;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,17 +50,23 @@ public class AdminController {
     @DeleteMapping("/delete-resident/{id}")
     public ResponseEntity<?> deleteResident(@PathVariable Long id) {
         try {
-            boolean isResidentDeleted = adminService.deleteResident(id);
-
-            if(isResidentDeleted) {
-                return ResponseEntity.ok().body(Map.of("message", "Resident successfully deleted"));
-            }
-
-            return ResponseEntity.notFound().build();
-        }
-        catch (DataException d) {
-            Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
-            return ResponseEntity.internalServerError().body(Map.of("error", "Server error"));
+            adminService.deleteResident(id);
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "message", "Resident deleted successfully"
+            ));
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                    "success", false,
+                    "error", "Cannot delete resident",
+                    "message", "This resident has associated documents. Delete documents first."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "success", false,
+                    "error", "Server error",
+                    "message", e.getMessage()
+            ));
         }
     }
 
@@ -74,6 +82,7 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
         catch (DataException d) {
+            d.printStackTrace();
             Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
             return ResponseEntity.internalServerError().body(Map.of("error", "Server error"));
         }
@@ -81,13 +90,10 @@ public class AdminController {
 
     @GetMapping("/search-resident")
     public ResponseEntity<?> searchResident(
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) String middleName,
-            @RequestParam(required = false) String suffix
+            @RequestParam(required = false) String keyword
     ) {
         try {
-            List<Resident> residents = adminService.searchResident(firstName, lastName, middleName, suffix);
+            List<Resident> residents = adminService.searchResident(keyword);
 
             if(residents.isEmpty()) {
                 return ResponseEntity.noContent().build();

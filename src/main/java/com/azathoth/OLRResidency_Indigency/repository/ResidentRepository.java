@@ -13,14 +13,11 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
     // query for keyword search
     @Query("SELECT r FROM Resident r WHERE " +
-            "(:firstName IS NULL OR r.firstName LIKE %:firstName%) AND " +
-            "(:lastName IS NULL OR r.lastName LIKE %:lastName%) AND " +
-            "(:middleName IS NULL OR r.middleName LIKE %:middleName%) AND " +
-            "(:suffix IS NULL OR r.suffix LIKE %:suffix%)")
+            "LOWER(r.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(r.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(r.middleName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(r.suffix) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Resident> searchResidents(
-            @Param("firstName") String firstName,
-            @Param("lastName") String lastName,
-            @Param("middleName") String middleName,
-            @Param("suffix") String suffix
+            @Param("keyword") String keyword
     );
 }
