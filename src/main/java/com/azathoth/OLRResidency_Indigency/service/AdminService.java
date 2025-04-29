@@ -1,5 +1,6 @@
 package com.azathoth.OLRResidency_Indigency.service;
 
+import com.azathoth.OLRResidency_Indigency.DTO.ResidentDTO;
 import com.azathoth.OLRResidency_Indigency.model.Resident;
 import com.azathoth.OLRResidency_Indigency.model.UpdateResident;
 import com.azathoth.OLRResidency_Indigency.repository.DocumentRequestRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -20,11 +22,17 @@ public class AdminService {
         this.documentRequestRepository = documentRequestRepository;
     }
 
-    public Optional<List<Resident>> getAllResidents() {
+    public Optional<List<ResidentDTO>> getAllResidents() {
         try {
-            return Optional.of(residentRepository.findAll());
-        }
-        catch (NullPointerException e) {
+            List<Resident> residents = residentRepository.findAll();
+
+            // Convert each Resident object to ResidentDTO
+            List<ResidentDTO> residentDTOs = residents.stream()
+                    .map(this::convertToResidentDTO)
+                    .collect(Collectors.toList());
+
+            return Optional.of(residentDTOs);
+        } catch (NullPointerException e) {
             return Optional.empty();
         }
     }
@@ -64,7 +72,14 @@ public class AdminService {
                 residentToBeUpdate.setAge(updateResident.getAge());
                 residentToBeUpdate.setGender(updateResident.getGender());
                 residentToBeUpdate.setStatus(updateResident.getStatus());
-                residentToBeUpdate.setCompleteAddress(updateResident.getCompleteAddress());
+                residentToBeUpdate.setHouseNumber(updateResident.getHouseNumber());
+                residentToBeUpdate.setStreet(updateResident.getStreet());
+                residentToBeUpdate.setSubdivision(updateResident.getSubdivision());
+                residentToBeUpdate.setBarangay(updateResident.getBarangay());
+                residentToBeUpdate.setCityMunicipality(updateResident.getCityMunicipality());
+                residentToBeUpdate.setProvince(updateResident.getProvince());
+                residentToBeUpdate.setPostalCode(updateResident.getPostalCode());
+                residentToBeUpdate.setRegion(updateResident.getRegion());
                 residentToBeUpdate.setBirthDate(updateResident.getBirthDate());
 
                 // update resident
@@ -80,7 +95,41 @@ public class AdminService {
         }
     }
 
-    public List<Resident> searchResident(String keyword) {
-        return residentRepository.searchResidents(keyword);
+    public List<ResidentDTO> searchResident(String keyword) {
+        List<Resident> residents = residentRepository.searchResidents(keyword);
+
+        return residents.stream()
+                .map(this::convertToResidentDTO)
+                .toList();
+    }
+
+    private ResidentDTO convertToResidentDTO(Resident resident) {
+        ResidentDTO dto = new ResidentDTO();
+
+        dto.setId(resident.getId());
+        dto.setNationalId(resident.getNationalId());
+        dto.setFirstName(resident.getFirstName());
+        dto.setLastName(resident.getLastName());
+        dto.setMiddleName(resident.getMiddleName());
+        dto.setSuffix(resident.getSuffix());
+        dto.setAge(resident.getAge());
+        dto.setGender(resident.getGender());
+        dto.setStatus(resident.getStatus());
+
+        // Set each address part individually
+        dto.setHouseNumber(resident.getHouseNumber());
+        dto.setStreet(resident.getStreet());
+        dto.setSubdivision(resident.getSubdivision());
+        dto.setBarangay(resident.getBarangay());
+        dto.setCityMunicipality(resident.getCityMunicipality());
+        dto.setProvince(resident.getProvince());
+        dto.setPostalCode(resident.getPostalCode());
+        dto.setRegion(resident.getRegion());
+
+        dto.setBirthDate(resident.getBirthDate());
+        dto.setPurpose(resident.getPurpose());
+        dto.setContactNumber(resident.getContactNumber());
+
+        return dto;
     }
 }

@@ -1,9 +1,7 @@
 package com.azathoth.OLRResidency_Indigency.DTO;
 
-import com.azathoth.OLRResidency_Indigency.model.Resident;
 import com.azathoth.OLRResidency_Indigency.util.Purpose;
 import com.azathoth.OLRResidency_Indigency.util.Status;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -50,10 +48,43 @@ public class ResidentDTO {
     @NotNull(message = "Status cannot be null")
     private Status status;
 
-    @NotBlank(message = "Address cannot be empty")
-    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.]{0,}$", message = "Address cannot contain special characters")
-    @Size(max = 255)
-    private String completeAddress;
+    @NotBlank(message = "House number cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}\\p{Z},.\\-#/]{1,}$", message = "House number contains invalid characters")
+    @Size(max = 50)
+    private String houseNumber;
+
+    @NotBlank(message = "Street cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}\\p{Z},.\\-]{1,}$", message = "Street contains invalid characters")
+    @Size(max = 100)
+    private String street;
+
+    @Pattern(regexp = "^[\\p{L}\\p{N}\\p{Z},.\\-]{1,}$", message = "Subdivision contains invalid characters")
+    @Size(max = 100)
+    private String subdivision;
+
+    @NotBlank(message = "Barangay cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{Z},.\\-]{1,}$", message = "Barangay contains invalid characters")
+    @Size(max = 100)
+    private String barangay;
+
+    @NotBlank(message = "City/Municipality cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{Z},.\\-]{1,}$", message = "City/Municipality contains invalid characters")
+    @Size(max = 100)
+    private String cityMunicipality;
+
+    @NotBlank(message = "Province cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{Z},.\\-]{1,}$", message = "Province contains invalid characters")
+    @Size(max = 100)
+    private String province;
+
+    @NotBlank(message = "Postal code cannot be empty")
+    @Pattern(regexp = "^\\d{4}$", message = "Postal code must be exactly 4 digits")
+    private String postalCode;
+
+    @NotBlank(message = "Region cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{Z},.\\-]{1,}$", message = "Region contains invalid characters")
+    @Size(max = 100)
+    private String region;
 
     @NotNull(message = "Birth date cannot be null")
     @Past(message = "Date must be from the past")
@@ -67,41 +98,41 @@ public class ResidentDTO {
     @Pattern(regexp = "^[0-9]+$", message = "Contact number only allow integer digits")
     private String contactNumber;
 
-    public ResidentDTO(long id, long nationalId, String firstName, String lastName, String middleName, String suffix,
-                       Integer age, String gender, Status status, String completeAddress, LocalDate birthDate,
-                       Purpose purpose, String contactNumber) {
+    public ResidentDTO(long id, long nationalId, String firstName, String lastName, String middleName,
+                       String suffix, Integer age, String gender, Status status, String houseNumber,
+                       String street, String subdivision, String barangay, String cityMunicipality,
+                       String province, String postalCode, String region, LocalDate birthDate, Purpose purpose,
+                       String contactNumber) {
         this.id = id;
-        this.purpose = purpose;
         this.nationalId = nationalId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
-        this.contactNumber = contactNumber;
         this.age = age;
         this.gender = gender;
         this.status = status;
-        this.completeAddress = completeAddress;
+        this.houseNumber = houseNumber;
+        this.street = street;
+        this.subdivision = subdivision;
+        this.barangay = barangay;
+        this.cityMunicipality = cityMunicipality;
+        this.province = province;
+        this.postalCode = postalCode;
+        this.region = region;
         this.birthDate = birthDate;
-    }
-
-    public ResidentDTO() {
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
+        this.purpose = purpose;
         this.contactNumber = contactNumber;
     }
 
-    public Purpose getPurpose() {
-        return purpose;
+    public ResidentDTO() {}
+
+    public long getId() {
+        return id;
     }
 
-    public void setPurpose(Purpose purpose) {
-        this.purpose = purpose;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getNationalId() {
@@ -110,14 +141,6 @@ public class ResidentDTO {
 
     public void setNationalId(long nationalId) {
         this.nationalId = nationalId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -176,12 +199,68 @@ public class ResidentDTO {
         this.status = status;
     }
 
-    public String getCompleteAddress() {
-        return completeAddress;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setCompleteAddress(String completeAddress) {
-        this.completeAddress = completeAddress;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getSubdivision() {
+        return subdivision;
+    }
+
+    public void setSubdivision(String subdivision) {
+        this.subdivision = subdivision;
+    }
+
+    public String getBarangay() {
+        return barangay;
+    }
+
+    public void setBarangay(String barangay) {
+        this.barangay = barangay;
+    }
+
+    public String getCityMunicipality() {
+        return cityMunicipality;
+    }
+
+    public void setCityMunicipality(String cityMunicipality) {
+        this.cityMunicipality = cityMunicipality;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public LocalDate getBirthDate() {
@@ -192,20 +271,19 @@ public class ResidentDTO {
         this.birthDate = birthDate;
     }
 
-    public ResidentDTO convertToResidentDTO(Resident resident) {
-        ResidentDTO dto = new ResidentDTO();
+    public Purpose getPurpose() {
+        return purpose;
+    }
 
-        dto.setId(resident.getId());
-        dto.setFirstName(resident.getFirstName());
-        dto.setLastName(resident.getLastName());
-        dto.setMiddleName(resident.getMiddleName());
-        dto.setSuffix(resident.getSuffix());
-        dto.setAge(resident.getAge());
-        dto.setGender(resident.getGender());
-        dto.setStatus(resident.getStatus());
-        dto.setCompleteAddress(resident.getCompleteAddress());
-        dto.setBirthDate(resident.getBirthDate());
+    public void setPurpose(Purpose purpose) {
+        this.purpose = purpose;
+    }
 
-        return dto;
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 }

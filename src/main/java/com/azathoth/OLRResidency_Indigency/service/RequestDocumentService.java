@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +42,11 @@ public class RequestDocumentService {
         );
     }
 
-    public Optional<DocumentRequest> processBarangayClearance(DocumentType request, @Valid ResidentDTO residentDTO) {
+    public Optional<DocumentRequest> processDocument(DocumentType request, @Valid ResidentDTO residentDTO) {
+        if (isRequestLimitReached(request, LocalDate.now())) {
+            return Optional.empty(); // limit reached
+        }
+
         // transfer dto to resident object
         Resident registeredResident = convertToEntity(residentDTO);
 
@@ -51,10 +57,18 @@ public class RequestDocumentService {
         DocumentRequest documentRequest = handleDocumentRequest(registeredResident, request);
 
         // sned sms using twilio
-        sms.sendSmsMessage(request.toString(), documentRequest.getDueDate(), residentDTO.getContactNumber());
+        // sms.sendSmsMessage(request.toString(), documentRequest.getDueDate(), residentDTO.getContactNumber());
 
         return Optional.of(documentRequest);
     }
+
+    private static final int MAX_DAILY_REQUESTS = 50;
+
+    private boolean isRequestLimitReached(DocumentType type, LocalDate date) {
+        long requestCount = documentRequestRepository.countByTypeAndDate(type, date);
+        return requestCount >= MAX_DAILY_REQUESTS;
+    }
+
 
     @Scheduled(cron = "0 0 0 * * ?") // Runs daily at midnight
     public void updateRequestStatuses() {
@@ -72,7 +86,26 @@ public class RequestDocumentService {
         request.setRequestDate(LocalDate.now());
         request.setDocumentType(documentType);
         request.setResident(resident);
-        request.setDueDate(LocalDate.now().plusDays(documentType.getProcessingDays()));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalTime currentTime = LocalTime.now();
+
+        LocalTime openingTime = LocalTime.of(9, 0); // 9:00 AM
+        LocalTime closingTime = LocalTime.of(21, 0); // 9:00 PM
+
+        LocalDateTime dueDateTime;
+
+        if(currentTime.isAfter(openingTime) && currentTime.isBefore(closingTime)) {
+            // if current time is within business time. Between 9:00 AM to 9:00 PM
+            dueDateTime = now.plusHours(documentType.getProcessingHours()); // add the document processing hours
+        }
+        else {
+            // request before 9:00 AM and after 9:00 PM
+            LocalDateTime nextDayPickUp = LocalDateTime.of(LocalDate.now().plusDays(1), openingTime);
+            dueDateTime = nextDayPickUp.plusHours(documentType.getProcessingHours()); // add the document processing hours
+        }
+
+        request.setDueDate(dueDateTime);
 
         return documentRequestRepository.save(request);
     }
@@ -89,7 +122,14 @@ public class RequestDocumentService {
         resident.setAge(residentDTO.getAge());
         resident.setGender(residentDTO.getGender());
         resident.setStatus(residentDTO.getStatus());
-        resident.setCompleteAddress(residentDTO.getCompleteAddress());
+        resident.setHouseNumber(residentDTO.getHouseNumber());
+        resident.setStreet(residentDTO.getStreet());
+        resident.setSubdivision(residentDTO.getSubdivision());
+        resident.setBarangay(residentDTO.getBarangay());
+        resident.setCityMunicipality(residentDTO.getCityMunicipality());
+        resident.setProvince(residentDTO.getProvince());
+        resident.setPostalCode(residentDTO.getPostalCode());
+        resident.setRegion(residentDTO.getRegion());
         resident.setBirthDate(residentDTO.getBirthDate());
         return resident;
     }

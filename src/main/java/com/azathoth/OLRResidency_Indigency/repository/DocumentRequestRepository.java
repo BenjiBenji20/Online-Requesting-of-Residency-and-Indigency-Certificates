@@ -1,6 +1,7 @@
 package com.azathoth.OLRResidency_Indigency.repository;
 
 import com.azathoth.OLRResidency_Indigency.model.DocumentRequest;
+import com.azathoth.OLRResidency_Indigency.model.DocumentType;
 import com.azathoth.OLRResidency_Indigency.util.DocumentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,8 @@ public interface DocumentRequestRepository extends JpaRepository<DocumentRequest
             @Param("status") DocumentStatus status,
             @Param("date") LocalDate date
     );
+
+    @Query("SELECT COUNT(dr) FROM DocumentRequest dr WHERE dr.documentType = :documentType AND dr.requestDate = :requestDate")
+    long countByTypeAndDate(@Param("documentType") DocumentType documentType, @Param("requestDate") LocalDate requestDate);
+
 }

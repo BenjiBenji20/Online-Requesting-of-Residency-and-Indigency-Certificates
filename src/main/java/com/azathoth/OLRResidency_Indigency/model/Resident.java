@@ -24,10 +24,10 @@ public class Resident {
     @Column(name = "created_at", updatable = false)
     private Date dateAt;
 
-    @Column(name = "first_name", nullable = false, length = 100) // Database constraint
+    @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 100) // Database constraint
+    @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
     @Column(name = "middle_name", length = 100) // Optional field
@@ -36,20 +36,42 @@ public class Resident {
     @Column(length = 2) // Suffix (e.g., Jr., Sr.)
     private String suffix;
 
-    @Column(nullable = false) // Database constraint
+    @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false, length = 10) // Database constraint
+    @Column(nullable = false, length = 10)
     private String gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false) // Database constraint
+    @Column(nullable = false)
     private Status status;
 
-    @Column(name = "complete_address", nullable = false) // Database constraint
-    private String completeAddress;
+    // address
+    @Column(name = "house_number", nullable = false)
+    private String houseNumber;
 
-    @Column(name = "birth_date", nullable = false) // Database constraint
+    @Column(name = "street", nullable = false)
+    private String street;
+
+    @Column(name = "subdivision")
+    private String subdivision;
+
+    @Column(name = "barangay", nullable = false)
+    private String barangay;
+
+    @Column(name = "city_municipality", nullable = false)
+    private String cityMunicipality;
+
+    @Column(name = "province", nullable = false)
+    private String province;
+
+    @Column(name = "postal_code", nullable = false)
+    private String postalCode;
+
+    @Column(name = "region", nullable = false)
+    private String region;
+
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
     @Column(nullable = false)
@@ -62,44 +84,36 @@ public class Resident {
     @OneToMany(mappedBy = "resident", cascade = CascadeType.REMOVE)
     private List<DocumentRequest> documentRequests;
 
-
-    public Resident(long id, Date dateAt, long nationalId, String firstName, String lastName,
-                    String middleName, String suffix, Integer age, String gender, Status status,
-                    String completeAddress, LocalDate birthDate, Purpose purpose, String contactNumber) {
+    public Resident(long id, long nationalId, Date dateAt, String firstName, String lastName, String middleName,
+                    String suffix, Integer age, String gender, Status status, String houseNumber, String street,
+                    String subdivision, String barangay, String cityMunicipality, String province, String postalCode,
+                    String region, LocalDate birthDate, Purpose purpose, String contactNumber,
+                    List<DocumentRequest> documentRequests) {
         this.id = id;
-        this.purpose = purpose;
-        this.dateAt = dateAt;
         this.nationalId = nationalId;
+        this.dateAt = dateAt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
-        this.contactNumber = contactNumber;
         this.age = age;
         this.gender = gender;
         this.status = status;
-        this.completeAddress = completeAddress;
+        this.houseNumber = houseNumber;
+        this.street = street;
+        this.subdivision = subdivision;
+        this.barangay = barangay;
+        this.cityMunicipality = cityMunicipality;
+        this.province = province;
+        this.postalCode = postalCode;
+        this.region = region;
         this.birthDate = birthDate;
-    }
-
-    public Resident() {
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-    public Purpose getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(Purpose purpose) {
         this.purpose = purpose;
+        this.contactNumber = contactNumber;
+        this.documentRequests = documentRequests;
     }
+
+    public Resident() {}
 
     public long getId() {
         return id;
@@ -115,6 +129,14 @@ public class Resident {
 
     public void setNationalId(long nationalId) {
         this.nationalId = nationalId;
+    }
+
+    public Date getDateAt() {
+        return dateAt;
+    }
+
+    public void setDateAt(Date dateAt) {
+        this.dateAt = dateAt;
     }
 
     public String getFirstName() {
@@ -173,12 +195,68 @@ public class Resident {
         this.status = status;
     }
 
-    public String getCompleteAddress() {
-        return completeAddress;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setCompleteAddress(String completeAddress) {
-        this.completeAddress = completeAddress;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getSubdivision() {
+        return subdivision;
+    }
+
+    public void setSubdivision(String subdivision) {
+        this.subdivision = subdivision;
+    }
+
+    public String getBarangay() {
+        return barangay;
+    }
+
+    public void setBarangay(String barangay) {
+        this.barangay = barangay;
+    }
+
+    public String getCityMunicipality() {
+        return cityMunicipality;
+    }
+
+    public void setCityMunicipality(String cityMunicipality) {
+        this.cityMunicipality = cityMunicipality;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public LocalDate getBirthDate() {
@@ -187,5 +265,29 @@ public class Resident {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Purpose getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(Purpose purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public List<DocumentRequest> getDocumentRequests() {
+        return documentRequests;
+    }
+
+    public void setDocumentRequests(List<DocumentRequest> documentRequests) {
+        this.documentRequests = documentRequests;
     }
 }

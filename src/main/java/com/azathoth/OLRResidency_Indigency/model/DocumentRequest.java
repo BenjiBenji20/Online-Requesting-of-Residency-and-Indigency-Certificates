@@ -4,6 +4,7 @@ import com.azathoth.OLRResidency_Indigency.util.DocumentStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "document_request")
@@ -24,12 +25,12 @@ public class DocumentRequest {
     private LocalDate requestDate;
 
     @Column(name = "due_date", nullable = false)
-    private LocalDate dueDate;
+    private LocalDateTime dueDate;
 
     @Enumerated(EnumType.STRING)
     private DocumentStatus status = DocumentStatus.PENDING;
 
-    public DocumentRequest(Long id, Resident resident, DocumentType documentType, LocalDate requestDate, LocalDate dueDate, DocumentStatus status) {
+    public DocumentRequest(Long id, Resident resident, DocumentType documentType, LocalDate requestDate, LocalDateTime dueDate, DocumentStatus status) {
         this.id = id;
         this.resident = resident;
         this.documentType = documentType;
@@ -73,11 +74,11 @@ public class DocumentRequest {
         this.requestDate = requestDate;
     }
 
-    public LocalDate getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 

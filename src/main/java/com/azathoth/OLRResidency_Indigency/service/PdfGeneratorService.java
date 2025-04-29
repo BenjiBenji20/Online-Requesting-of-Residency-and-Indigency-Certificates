@@ -63,7 +63,7 @@ public class PdfGeneratorService {
                 contentStream.showText("of legal age, single or married, " );
                 yPosition -= 20;
                 contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Filipino Citizen and a resident of " + resident.getCompleteAddress() + ",");
+                contentStream.showText("Filipino Citizen and a resident of " + resident.getCityMunicipality() + ",");
                 yPosition -= 20;
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.showText("belongs to the Indigent Families of this barangay having an annual income");
@@ -83,7 +83,7 @@ public class PdfGeneratorService {
                 contentStream.newLineAtOffset(0, -30);
                 contentStream.showText("ISSUED this " + LocalDate.now().getDayOfMonth() +
                         " day of " + LocalDate.now().getMonth() + " " + LocalDate.now().getYear() +
-                        " at Address " + resident.getCompleteAddress() + ".");
+                        " at Address " + resident.getCityMunicipality() + ".");
                 contentStream.endText();
 
                 // Add the signature and name of Punong Barangay

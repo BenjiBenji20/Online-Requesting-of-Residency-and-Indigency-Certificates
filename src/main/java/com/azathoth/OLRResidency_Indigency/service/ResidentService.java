@@ -49,6 +49,7 @@ public class ResidentService {
     private Resident convertToEntity(ResidentDTO residentDTO) {
         Resident resident = new Resident();
         resident.setNationalId(residentDTO.getNationalId());
+        resident.setContactNumber(residentDTO.getContactNumber());
         resident.setPurpose(residentDTO.getPurpose());
         resident.setFirstName(residentDTO.getFirstName());
         resident.setLastName(residentDTO.getLastName());
@@ -57,9 +58,15 @@ public class ResidentService {
         resident.setAge(residentDTO.getAge());
         resident.setGender(residentDTO.getGender());
         resident.setStatus(residentDTO.getStatus());
-        resident.setCompleteAddress(residentDTO.getCompleteAddress());
+        resident.setHouseNumber(residentDTO.getHouseNumber());
+        resident.setStreet(residentDTO.getStreet());
+        resident.setSubdivision(residentDTO.getSubdivision());
+        resident.setBarangay(residentDTO.getBarangay());
+        resident.setCityMunicipality(residentDTO.getCityMunicipality());
+        resident.setProvince(residentDTO.getProvince());
+        resident.setPostalCode(residentDTO.getPostalCode());
+        resident.setRegion(residentDTO.getRegion());
         resident.setBirthDate(residentDTO.getBirthDate());
-        resident.setContactNumber(residentDTO.getContactNumber());
         return resident;
     }
 }

@@ -42,56 +42,85 @@ public class UpdateResident {
     @NotNull(message = "Status cannot be null")
     private Status status;
 
-    @NotBlank(message = "Address cannot be empty")
-    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.]{0,}$", message = "Address cannot contain special characters")
-    @Size(max = 255)
-    private String completeAddress;
+    // 🔥 Address Fields
+    @NotBlank(message = "House number cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.\\-]{0,}$", message = "House number cannot contain invalid special characters")
+    @Size(max = 50)
+    private String houseNumber;
+
+    @NotBlank(message = "Street cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.\\-]{0,}$", message = "Street cannot contain invalid special characters")
+    @Size(max = 100)
+    private String street;
+
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.\\-]{0,}$", message = "Subdivision cannot contain invalid special characters")
+    @Size(max = 100)
+    private String subdivision;
+
+    @NotBlank(message = "Barangay cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.\\-]{0,}$", message = "Barangay cannot contain invalid special characters")
+    @Size(max = 100)
+    private String barangay;
+
+    @NotBlank(message = "City/Municipality cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.\\-]{0,}$", message = "City/Municipality cannot contain invalid special characters")
+    @Size(max = 100)
+    private String cityMunicipality;
+
+    @NotBlank(message = "Province cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.\\-]{0,}$", message = "Province cannot contain invalid special characters")
+    @Size(max = 100)
+    private String province;
+
+    @NotBlank(message = "Postal code cannot be empty")
+    @Pattern(regexp = "^[0-9]{4}$", message = "Postal code must be exactly 4 digits")
+    private String postalCode;
+
+    @NotBlank(message = "Region cannot be empty")
+    @Pattern(regexp = "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{Z},.\\-]{0,}$", message = "Region cannot contain invalid special characters")
+    @Size(max = 100)
+    private String region;
 
     @NotNull(message = "Birth date cannot be null")
     @Past(message = "Date must be from the past")
     private LocalDate birthDate;
 
-    @Column(nullable = false)
+    @NotNull(message = "Purpose cannot be null")
     @Enumerated(EnumType.STRING)
     private Purpose purpose;
 
-    @Column(name = "contact_no", length = 11, nullable = false)
+    @NotBlank(message = "Contact number cannot be empty")
+    @Pattern(regexp = "^[0-9]{11}$", message = "Contact number must be exactly 11 digits")
     private String contactNumber;
 
+    // 🔥 Updated Constructor
     public UpdateResident(long id, String firstName, String lastName, String middleName, String suffix,
-                          Integer age, String gender, Status status, String completeAddress, LocalDate birthDate,
-                          Purpose purpose, String contactNumber) {
+                          Integer age, String gender, Status status,
+                          String houseNumber, String street, String subdivision, String barangay,
+                          String cityMunicipality, String province, String postalCode, String region,
+                          LocalDate birthDate, Purpose purpose, String contactNumber) {
         this.id = id;
-        this.purpose = purpose;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.suffix = suffix;
-        this.contactNumber = contactNumber;
         this.age = age;
         this.gender = gender;
         this.status = status;
-        this.completeAddress = completeAddress;
+        this.houseNumber = houseNumber;
+        this.street = street;
+        this.subdivision = subdivision;
+        this.barangay = barangay;
+        this.cityMunicipality = cityMunicipality;
+        this.province = province;
+        this.postalCode = postalCode;
+        this.region = region;
         this.birthDate = birthDate;
-    }
-
-    public UpdateResident() {
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
+        this.purpose = purpose;
         this.contactNumber = contactNumber;
     }
 
-    public Purpose getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(Purpose purpose) {
-        this.purpose = purpose;
+    public UpdateResident() {
     }
 
     public long getId() {
@@ -158,12 +187,68 @@ public class UpdateResident {
         this.status = status;
     }
 
-    public String getCompleteAddress() {
-        return completeAddress;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setCompleteAddress(String completeAddress) {
-        this.completeAddress = completeAddress;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getSubdivision() {
+        return subdivision;
+    }
+
+    public void setSubdivision(String subdivision) {
+        this.subdivision = subdivision;
+    }
+
+    public String getBarangay() {
+        return barangay;
+    }
+
+    public void setBarangay(String barangay) {
+        this.barangay = barangay;
+    }
+
+    public String getCityMunicipality() {
+        return cityMunicipality;
+    }
+
+    public void setCityMunicipality(String cityMunicipality) {
+        this.cityMunicipality = cityMunicipality;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public LocalDate getBirthDate() {
@@ -172,5 +257,21 @@ public class UpdateResident {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Purpose getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(Purpose purpose) {
+        this.purpose = purpose;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 }

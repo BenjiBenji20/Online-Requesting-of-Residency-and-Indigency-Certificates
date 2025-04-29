@@ -1,5 +1,6 @@
 package com.azathoth.OLRResidency_Indigency.controller;
 
+import com.azathoth.OLRResidency_Indigency.DTO.ResidentDTO;
 import com.azathoth.OLRResidency_Indigency.model.Resident;
 import com.azathoth.OLRResidency_Indigency.model.UpdateResident;
 import com.azathoth.OLRResidency_Indigency.service.AdminService;
@@ -33,7 +34,7 @@ public class AdminController {
     @GetMapping("/get-all-residents")
     public ResponseEntity<?> getAllResidents() {
         try {
-            Optional<List<Resident>> allResidents = adminService.getAllResidents();
+            Optional<List<ResidentDTO>> allResidents = adminService.getAllResidents();
 
             if(allResidents.isPresent()) {
                 return ResponseEntity.ok(allResidents);
@@ -93,7 +94,7 @@ public class AdminController {
             @RequestParam(required = false) String keyword
     ) {
         try {
-            List<Resident> residents = adminService.searchResident(keyword);
+            List<ResidentDTO> residents = adminService.searchResident(keyword);
 
             if(residents.isEmpty()) {
                 return ResponseEntity.noContent().build();

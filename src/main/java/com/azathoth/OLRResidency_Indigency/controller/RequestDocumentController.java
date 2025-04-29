@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ import java.util.Optional;
 @RequestMapping("/api/documents/public")
 public class RequestDocumentController {
 
-    private static Logger logger = LoggerFactory.getLogger(RequestDocumentController.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestDocumentController.class);
     private final RequestDocumentService requestDocumentService;
 
     public RequestDocumentController(RequestDocumentService requestDocumentService) {
@@ -43,20 +44,32 @@ public class RequestDocumentController {
             switch (documentType.toString().toLowerCase()) {
                 case "barangay_clearance" :
                     request = "barangay clearance";
-                    documentRequest = requestDocumentService.processBarangayClearance(documentType, residentDTO);
+                    documentRequest = requestDocumentService.processDocument(documentType, residentDTO);
+                    break;
+
+                case "residency" :
+                    request = "residency";
+                    documentRequest = requestDocumentService.processDocument(documentType, residentDTO);
+                    break;
+
+                case "indigency" :
+                    request = "indigency";
+                    documentRequest = requestDocumentService.processDocument(documentType, residentDTO);
                     break;
 
                 default :
                     return ResponseEntity.badRequest().body(Map.of("error", "Bad request"));
             }
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy hh:mm a"); // date and time formatter
+
             return documentRequest.isEmpty() ?
-                    ResponseEntity.badRequest().body(Map.of("error", "Resident didn't exists by national id: "
-                            + residentDTO.getNationalId() + " Please register first in barangay.")) :
+                    ResponseEntity.badRequest().body(Map.of("error", "Daily request limit reached for " + request
+                            + ". Please try again tomorrow.")) :
                     ResponseEntity.ok().body(Map.of(
                             "message", "Request submitted successfully",
                             "request", request,
-                            "dueDate", documentRequest.get().getDueDate()
+                            "time", documentRequest.get().getDueDate().format(formatter)
                     ));
         }
         catch (HttpClientErrorException e) {
