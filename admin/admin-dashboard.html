@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/Css/admin.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="../images/barangays.png">
+  <title>Document</title>
+</head>
+<body>
+  <img src="/images/barangays.png" alt="logo" class="logo"> <br><br>
+  <h1 class="list">List Of Residents</h1><br>
+  <div class="data">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Last name</th>
+          <th>First name</th>
+          <th>Middle name</th>
+          <th>Suffix</th>
+          <th>Age</th>
+          <th>Contact Number</th>
+          <th>National Id</th>
+          <th>Birthday</th>
+          <th>Gender</th>
+          <th>Barangay</th>
+          <th>Status</th>
+          <th>Purpose</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody class="table-data">
+        <!-- JS will inject rows here -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="search-container">
+    <form id="search-resident-js" role="search">
+      <input type="search" class="search-input" id="search-input-js" placeholder="Search residents...">
+    </form>
+  </div>
+  
+  <div id="updateModalContainer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="/admin/service/api-service.js"></script>
+  <script type="module" src="/admin/view/dashboard-view.js"></script>
+  <script type="module" src="/admin/controller/admin-dashboard-controller.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Css/click.css">
+    <link rel="icon" href="../images/barangays.png">
+    <title>Registration</title>
+</head>
+<body>
+    
+    <div class="box">
+        <img src="/images/barangays.png" alt="Logo" class="logo">
+
+         <a href="landing.html#about" class="top-right-btn">About</a>
+        
+        
+        <h1><br><br>Welcome Ka-Santulan</h1>
+
+        <p class="welcome"><br></p>
+
+        <div class="button-container">
+            <p class="welcome"><br>Click the Button of the Document you want to request</p>
+            <button class="btn" onclick="toggleForm('form1')">Indigency</button>
+            <button class="btn" onclick="toggleForm('form1')">Residency</button>
+            <button class="btn" onclick="toggleForm('form1')">Barangay_Clearance</button>
+        </div>
+        <div class="notice">
+            <p>
+                <strong>Notice:</strong> Document requests are processed between 9:00 AM and 9:00 PM. 
+                <br>Requests outside these hours will be scheduled for the next day.
+            </p>
+        </div>
+
+        <div class="form-container">
+            <!-- Registration Form 1 -->
+            <form id="form1" class="registration-form">
+                <p class="title"></p><br>
+            
+                <div class="inline-fields">
+                    <div class="input-field">
+                        <input required class="input" type="text" id="lastname1">
+                        <label class="label" for="lastname1">Last Name</label>
+                        <span id="lastNameError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input required class="input" type="text" id="firstname1">
+                        <label class="label" for="firstname1">First Name</label>
+                        <span id="firstNameError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input class="input" type="text" id="middlename1">
+                        <label class="label" for="middlename1">Middle Name</label>
+                        <span id="middleNameError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input maxlength="5" class="input" type="text" id="suffix">
+                        <label class="label" for="suffix">Suffix</label>
+                        <span id="suffixError" class="field-error"></span>
+                    </div>
+                </div>
+            
+                <div class="inline-fields">
+                    <div class="input-field">
+                        <input required class="input" type="number" id="age1">
+                        <label class="label" for="age1">Age</label>
+                        <span id="ageError" class="field-error"></span>
+                    </div>
+            
+                    <div class="input-field">
+                        <input required class="input" type="text" id="contactNumber">
+                        <label class="label" for="contactNumber">Contact Number</label>
+                        <span id="contactNumberError" class="field-error"></span>
+                    </div>
+            
+                    <div class="input-field">
+                        <input class="input" type="number" id="national-id">
+                        <label class="label" for="national-id">National ID (Ex. 123456789101) </label>
+                        <span id="nationalIdError" class="field-error"></span>
+                    </div>
+                </div>
+            
+                <div class="inline-fields">
+                    <div class="input-field">
+                        <input required class="input" type="date" id="birthday1">
+                        <label class="label" for="birthday1">Birthday</label>
+                        <span id="birthDateError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <select required class="input" id="gender1">
+                            <option value="" disabled selected>Choose</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label class="label" for="gender1">Gender</label>
+                        <span id="genderError" class="field-error"></span>
+                    </div>
+                </div>
+            
+                <!-- Address Section -->
+                <p class="title">Address Details</p><br>
+                <div class="inline-fields">
+                    <div class="input-field">
+                        <input required class="input" type="text" id="houseNumber">
+                        <label class="label" for="houseNumber">House Number</label>
+                        <span id="houseNumberError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input required class="input" type="text" id="street">
+                        <label class="label" for="street">Street</label>
+                        <span id="streetError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input class="input" type="text" id="subdivision">
+                        <label class="label" for="subdivision">Subdivision (Optional)</label>
+                        <span id="subdivisionError" class="field-error"></span>
+                    </div>
+                </div>
+            
+                <div class="inline-fields">
+                    <div class="input-field">
+                        <input required class="input" type="text" id="barangay">
+                        <label class="label" for="barangay">Barangay</label>
+                        <span id="barangayError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input required class="input" type="text" id="cityMunicipality">
+                        <label class="label" for="cityMunicipality">City / Municipality</label>
+                        <span id="cityMunicipalityError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input required class="input" type="text" id="province">
+                        <label class="label" for="province">Province</label>
+                        <span id="provinceError" class="field-error"></span>
+                    </div>
+                </div>
+            
+                <div class="inline-fields">
+                    <div class="input-field">
+                        <input required class="input" type="text" id="postalCode">
+                        <label class="label" for="postalCode">Postal Code</label>
+                        <span id="postalCodeError" class="field-error"></span>
+                    </div>
+                    <div class="input-field">
+                        <input required class="input" type="text" id="region">
+                        <label class="label" for="region">Region</label>
+                        <span id="regionError" class="field-error"></span>
+                    </div>
+                </div>
+            
+                <!-- End of Address Section -->
+            
+                <div class="input-field">
+                    <select required class="input" id="status">
+                        <option value="" disabled selected>Choose</option>
+                        <option value="SINGLE">Single</option>
+                        <option value="MARRIED">Married</option>
+                        <option value="WIDOWED">Widowed</option>
+                        <option value="">Other</option>
+                    </select>
+                    <label class="label" for="status">Status</label>
+                    <span id="statusError" class="field-error"></span>
+                </div>
+            
+                <div class="input-field">
+                    <select required class="input" id="purpose">
+                        <option value="" disabled selected>Select Purpose</option>
+                        <option value="WORK">Work</option>
+                        <option value="SCHOOL">School</option>
+                        <option value="MEDICAL">Medical Requirements</option>
+                        <option value="BUSINESS">Business</option>
+                    </select>
+                    <label class="label" for="purpose">Purpose</label>
+                    <span id="purposeError" class="field-error"></span>
+                </div>
+            
+                <button class="submit-btn">Proceed</button>
+                <div class="privacy">
+                    Your personal data will be handled with strict confidentiality and used only for your document processing needs in accordance with data privacy laws.
+                </div>
+            </form>
+            
+            
+        </div>
+        
+    </div>
+    <script src="/Js/fetch.js"></script>
+    <script src="/Js/click.js"></script>
+</body>
+</html>

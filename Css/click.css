@@ -1,0 +1,226 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('/images/hall.jpg') no-repeat center center/cover;
+    position: relative;
+    text-align: center;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Ensure the container can resize dynamically */
+/* Container box */
+.box {
+    width: 98%;
+    max-width: 1400px;
+    min-height: 200px;
+    background: #e8df7f;
+    border-radius: 25px;
+    padding: 50px;
+    border: 2px solid #000;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    transition: height 0.3s ease-in-out;
+}
+
+/* Logo positioned at the top-left inside the container */
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 130px;
+    height: auto;
+}
+
+/* Button positioned at the top-right inside the container */
+.top-right-btn {
+    position: absolute;
+    top: 20px;  /* Align with the top of the container */
+    right: 30px; /* Align with the right of the container */
+    padding: 10px 20px; 
+    font-size: 20px;
+    text-decoration: none;
+    border: 2px solid #000;
+    background: whitesmoke;
+    color: black;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.top-right-btn:hover {
+    background: rgb(98, 203, 82);
+}
+
+
+.btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-top: 10px;
+        border: none;
+        border: 2px solid #000;
+        background:  whitesmoke;
+        color: black;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: 0.3s;
+        font-weight: bold;
+     }
+
+.title{
+    font-weight: bold;
+}
+
+
+.form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.registration-form {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    max-width: 800px;
+   border: 2px solid #000;
+    background: whitesmoke;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.registration-form.active {
+    display: block;
+}
+
+/* Layout improvements */
+.inline-fields {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+.input-field {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input {
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: 1.5px solid #000;
+    padding: 10px;
+    font-size: 16px;
+    background: transparent;
+    outline: none;
+}
+.input::placeholder{
+    
+}
+.label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #777;
+    transition: all 0.3s ease;
+    background: whitesmoke;
+
+    padding: 0 5px;
+}
+
+.input-field{
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+#national-id{
+    
+}
+/* Move label when input is focused or has text */
+.input:focus ~ .label,
+.input:not(:placeholder-shown) ~ .label {
+    top: 5px;
+    font-size: 12px;
+    color: #000;
+    opacity: 0.8;
+}
+
+.submit-btn{
+    background: whitesmoke;
+    padding: 10px;
+    border-radius: 10px;
+}
+.submit-btn:hover{
+    background: rgb(60, 182, 38);;
+}
+
+#national-id::placeholder {
+    color: transparent; 
+}
+.side-example {
+    position: absolute;
+    right: -280px; 
+    top: 0;
+    transform: rotate(-5deg);
+    font-style: italic;
+    font-size: 14px;
+    color: #444;
+    max-width: 200px;
+    line-height: 1.4;
+  }
+  .registration-form {
+    position: relative;
+  }
+
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+.field-error {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    color: red;
+    font-size: 13px;
+    display: inline-block;
+}
+.field-error.show {
+    opacity: 1;
+}
+
+.notice {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.privacy {
+    font-size: 12px;
+    margin-top: 20px;
+}

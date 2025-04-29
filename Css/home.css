@@ -1,0 +1,83 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    background: url('/images/hall.jpg') no-repeat center center fixed;
+    background-size: cover;
+    padding-left: 20px;
+  }
+  
+  .form-control {
+     
+      background-color: rgb(141, 203, 132);;
+      width: 600px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2px;
+      padding: 25px;
+      margin-left: 90px;
+      border-radius: 8px;
+     
+    }
+    .title {
+      font-size: 30px;
+      font-weight: 600;
+      text-align: center;
+      max-height: 15px;
+    }
+    
+  
+    p{
+      padding-top: 20px;
+      font-size: 20px;
+      color: black;
+      font-weight: bold;
+      text-align: center;
+      
+    }
+
+    .submit-btn {
+    padding: 12px 25px;
+    background-color: #4CAF50; 
+    color: black;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    width: auto; 
+    margin-top: 20px;
+    border: 2px solid #4CAF50; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.submit-btn:hover {
+    background-color: #45a049; 
+    border-color: #45a049; 
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); 
+    transform: translateY(-2px); 
+}
+
+.submit-btn:active {
+    background-color: #3e8e41; 
+    border-color: #3e8e41; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    transform: translateY(0);
+}
+  
+    .logo-container {
+      position: absolute;
+      right: 120px;
+      top: 50%;
+      transform: translateY(-50%);
+  }
+  
+  .logo {
+      width: 550px; 
+      height: auto;
+  }
